@@ -71,6 +71,41 @@ npm run dev                     # http://localhost:3000
 Supabase's *Connect* panel) as well as the variable names below; the app itself never uses a direct
 database connection, it talks to Supabase over HTTPS.
 
+## A new Supabase project
+
+The store can be given a completely fresh database — schema, policies, storage buckets, catalogue
+and the first Store Owner — with one command:
+
+```bash
+npm run db:init        # migrations -> buckets and policies -> catalogue -> your Store Owner
+```
+
+It runs `scripts/apply-schema.mjs`, `scripts/seed.mjs` and `scripts/create-owner.mjs` in order. Every
+step is idempotent: it never drops a table and never deletes a row, so it is safe on an empty project
+and on one already in use. It reads `SUPABASE_DB_URL`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`
+and — for the first Store Owner — `ADMIN_EMAIL`, `ADMIN_FULL_NAME` and `ADMIN_PASSWORD`; the owner
+step is skipped with a note when `ADMIN_EMAIL` is not set. Nothing it reads is ever printed.
+
+Getting the project itself, either way:
+
+- **Recommended — through the Studio:** *Build setup → pick a Supabase stack* creates the project and
+  connects it, so every command here is given its values automatically, and `npm run db:init` is all
+  that is left.
+- **From this machine:** `npm run db:create` creates the project with the Supabase CLI. It needs one
+  credential, `SUPABASE_ACCESS_TOKEN` (a personal access token from
+  <https://supabase.com/dashboard/account/tokens>), plus optionally `SUPABASE_ORG_ID` (when your
+  account has more than one organization), `SUPABASE_REGION` (default `ap-south-1`, Mumbai — the
+  region nearest the shop's visitors and the one the Vercel functions run in) and
+  `SUPABASE_PROJECT_NAME` (default `daraz-ea`). It proves the connection host with a real connection
+  rather than assuming it, and writes the new project's values to
+  `~/daraz-ea-supabase-credentials.txt` — outside this repository — for you to read once, save where
+  they belong and then delete. Change the database password in the project's settings afterwards.
+
+`SUPABASE_DB_URL` must be the project's **Session pooler** string (*Connect → Session pooler*): the
+pooler answers over IPv4, while the direct `db.[ref].supabase.co` host is IPv6-only on the free plan
+and will not connect from every machine. The application itself never uses a direct connection — it
+talks to Supabase over HTTPS with the URL and the keys.
+
 ## Environment variables
 
 Every value comes from your own Supabase project's *Settings → API*. Never commit a real value —
