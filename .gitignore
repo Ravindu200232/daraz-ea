@@ -19,3 +19,5 @@ build/
 plan/
 # The Supabase CLI's own local state (which project this checkout is linked to).
 supabase/.temp/
+.vercel
+.env*
