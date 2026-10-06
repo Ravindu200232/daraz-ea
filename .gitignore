@@ -1,0 +1,19 @@
+.next
+node_modules
+.env
+.env.*
+!.env.example
+
+# QA output
+test-results/
+playwright-report/
+.lighthouseci/
+
+# The studio's own record, the host's link file and any coverage output are never published.
+.agentforge/
+.vercel/
+coverage/
+
+# The studio's own build guides and development plan - not part of the application.
+build/
+plan/
