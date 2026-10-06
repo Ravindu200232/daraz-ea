@@ -17,3 +17,5 @@ coverage/
 # The studio's own build guides and development plan - not part of the application.
 build/
 plan/
+# The Supabase CLI's own local state (which project this checkout is linked to).
+supabase/.temp/
