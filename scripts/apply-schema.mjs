@@ -23,7 +23,15 @@ const client = new pg.Client({
   ssl: /sslmode=disable/.test(url) ? false : { rejectUnauthorized: false },
 });
 
-await client.connect();
+try {
+  await client.connect();
+} catch (error) {
+  console.error(`❌ could not reach the database named by SUPABASE_DB_URL (${error.code || error.message}).`);
+  console.error('   Use that project\'s Session pooler string from Connect → Session pooler: the pooler answers over');
+  console.error('   IPv4, while the direct db.[ref].supabase.co host is IPv6-only on the free plan and cannot be');
+  console.error('   reached from every machine. A paused project has to be resumed in the Supabase dashboard first.');
+  process.exit(1);
+}
 let failed = 0;
 for (const file of files) {
   const sql = await readFile(path.join(dir, file), 'utf8');
