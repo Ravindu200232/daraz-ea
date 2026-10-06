@@ -46,7 +46,9 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          # The version package.json pins for the deployed build. supabase-js needs Node 22 or newer
+          # for the native WebSocket it expects, so Node 20 cannot run the seed or the app here.
+          node-version: 22
           cache: npm
       - run: npm ci
       - run: npm test
