@@ -1,0 +1,19 @@
+# What the host never needs to receive. The project's own record, the build output, the QA output and
+# every local environment file are kept on this machine; only .env.example (which holds no values)
+# travels with the source.
+.agentforge/
+node_modules/
+.next/
+build/
+plan/
+test-results/
+playwright-report/
+.lighthouseci/
+coverage/
+.vercel/
+.env
+.env.local
+.env.production
+.env.production.local
+.env.development.local
+.env.test.local
